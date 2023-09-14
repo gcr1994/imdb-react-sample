@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig } from 'axios'
+import axios, { AxiosRequestConfig } from "axios";
 
 export const httpClient = axios.create();
 
@@ -8,10 +8,12 @@ export const httpClient = axios.create();
  * @param header header options
  * @returns {Promise<any>}
  */
-export const get = async  (url: string, header?: AxiosRequestConfig): Promise<any> => {
-    console.log('url:', url, 'header:', header)
-   return axios.get(url, header);
-}
+export const get = async (
+  url: string,
+  header?: AxiosRequestConfig
+): Promise<any> => {
+  return axios.get(url, header);
+};
 
 /**
  * Use Axios to make a post request
@@ -20,9 +22,13 @@ export const get = async  (url: string, header?: AxiosRequestConfig): Promise<an
  * @param header header options
  * @returns {Promise<any>}
  */
-export const post = async (url:string, body?:AxiosRequestConfig<any> , header?: AxiosRequestConfig): Promise<any> => {
-    return axios.post(url, body, header)
-}
+export const post = async (
+  url: string,
+  body?: AxiosRequestConfig<any>,
+  header?: AxiosRequestConfig
+): Promise<any> => {
+  return axios.post(url, body, header);
+};
 
 /**
  * Use Axios to make a delete request
@@ -30,6 +36,9 @@ export const post = async (url:string, body?:AxiosRequestConfig<any> , header?: 
  * @param header header options
  * @returns {Promise<any>}
  */
-export const remove = async (url: string, header?:AxiosRequestConfig): Promise<any> => {
-    return axios.delete(url,header)
-}
+export const remove = async (
+  url: string,
+  header?: AxiosRequestConfig
+): Promise<any> => {
+  return axios.delete(url, header);
+};
