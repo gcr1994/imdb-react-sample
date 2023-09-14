@@ -9,6 +9,7 @@ export const httpClient = axios.create();
  * @returns {Promise<any>}
  */
 export const get = async  (url: string, header?: AxiosRequestConfig): Promise<any> => {
+    console.log('url:', url, 'header:', header)
    return axios.get(url, header);
 }
 
