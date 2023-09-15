@@ -22,12 +22,9 @@ export const Movie = () => {
   );
 
   function MovieCard(props: { id: string }) {
-    const [image, setImage] = useState("");
-
     const { id } = props;
     const { isLoading, error, data } = useQuery(["movies", id], async () => {
       const movie: movie = await getMovieById(id);
-      setImage(process.env.NEXT_PUBLIC_TMBD_IMG_URL + movie.poster_path);
       return movie;
     });
 
@@ -35,11 +32,14 @@ export const Movie = () => {
 
     if (error) return "An error has occurred: " + error;
 
-    console.log(image);
     return (
       <Card sx={{ maxWidth: 345 }}>
         <CardActionArea>
-          <CardMedia component="img" height="140" image={image} />
+          <CardMedia
+            component="img"
+            height="140"
+            image={process.env.NEXT_PUBLIC_TMBD_IMG_URL + data!.poster_path}
+          />
           <CardContent>
             <Typography gutterBottom variant="h5" component="div">
               {data!.title}
