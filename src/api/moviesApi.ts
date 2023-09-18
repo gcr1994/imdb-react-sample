@@ -1,14 +1,14 @@
 import { movie } from "@/types/movie";
-import { get } from "@/utils/api";
+import axios from "axios";
+
+const instance = axios.create({ baseURL: process.env.NEXT_PUBLIC_API_URL });
+instance.defaults.headers.common["Accept"] = "application/json";
+instance.defaults.headers.common["Authorization"] =
+  "Bearer " + process.env.NEXT_PUBLIC_API_RAT;
 
 export const getMovies: () => Promise<movie[]> = async () => {
   try {
-    const response = get(process.env.NEXT_PUBLIC_API_URL! + "discover/movie", {
-      headers: {
-        Accept: "application/json",
-        Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_RAT}`,
-      },
-    });
+    const response = instance.get("discover/movie");
     const data = await response;
     return data.data.results as movie[];
   } catch (err) {
@@ -18,13 +18,7 @@ export const getMovies: () => Promise<movie[]> = async () => {
 
 export const getMovieById: (id: string) => Promise<movie> = async (id) => {
   try {
-    console.log(id);
-    const response = get(process.env.NEXT_PUBLIC_API_URL! + "movie/" + id, {
-      headers: {
-        Accept: "application/json",
-        Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_RAT}`,
-      },
-    });
+    const response = instance.get("movie/" + id);
     const data = await response;
     return data.data as movie;
   } catch (err) {
@@ -34,7 +28,7 @@ export const getMovieById: (id: string) => Promise<movie> = async (id) => {
 
 export const getMovieImage: (path: string) => Promise<any> = async (path) => {
   try {
-    const response = get(process.env.NEXT_PUBLIC_TMBD_IMG_URL! + path);
+    const response = axios.get(process.env.NEXT_PUBLIC_TMBD_IMG_URL! + path);
     const data = await response;
     return data.data;
   } catch (err) {

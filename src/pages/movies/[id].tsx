@@ -5,21 +5,15 @@ import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { CardActionArea } from "@mui/material";
 import { useRouter } from "next/router";
-import { QueryClient, QueryClientProvider, useQuery } from "react-query";
-import { getMovieById, getMovieImage } from "@/api/moviesApi";
+import { useQuery } from "react-query";
+import { getMovieById } from "@/api/moviesApi";
 import { movie } from "@/types/movie";
-import { useState } from "react";
-const queryClient = new QueryClient();
 
 export const Movie = () => {
   const router = useRouter();
   const { id } = router.query;
 
-  return (
-    <QueryClientProvider client={queryClient}>
-      <MovieCard id={id as string}></MovieCard>
-    </QueryClientProvider>
-  );
+  return <MovieCard id={id as string}></MovieCard>;
 
   function MovieCard(props: { id: string }) {
     const { id } = props;
