@@ -1,3 +1,4 @@
+import ButtonBar from "@/components/ButtonBar";
 import React from "react";
 import { Hydrate, QueryClient, QueryClientProvider } from "react-query";
 
@@ -13,6 +14,7 @@ export default function MyApp({
   return (
     <QueryClientProvider client={queryClient}>
       <Hydrate state={pageProps.dehydratedState}>
+        <ButtonBar />
         <Component {...pageProps} />
       </Hydrate>
     </QueryClientProvider>

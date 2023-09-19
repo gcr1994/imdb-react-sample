@@ -20,8 +20,9 @@ const defaultTheme = createTheme();
 
 export const Signup = () => {
   const { register, handleSubmit } = useForm();
-  const onSubmit = (data: FieldValues) => {
-    const result = signup(data);
+  const onSubmit = async (data: FieldValues) => {
+    const result = await signup(data);
+    window.location.href = "/login";
   };
 
   return (
