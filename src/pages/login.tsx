@@ -18,7 +18,10 @@ export const Login = () => {
           Password:
           <input type="password" {...register("password")}></input>
         </label>
+        <button>Log in</button>
       </form>
     </>
   );
 };
+
+export default Login;

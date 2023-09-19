@@ -1,10 +1,6 @@
-import { getServerSession } from "next-auth";
 import "./globals.css";
 import type { Metadata } from "next";
-import { SessionProvider } from "next-auth/react";
 import { Inter } from "next/font/google";
-import { QueryClientProvider, useQueryClient } from "react-query";
-
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -12,20 +8,15 @@ export const metadata: Metadata = {
   description: "A simple next js app",
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const queryClient = useQueryClient();
-
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <QueryClientProvider client={queryClient}>
-          {children}
-        </QueryClientProvider>
-      </body>
+      <header>hi</header>
+      <body className={inter.className}>{children}</body>
     </html>
   );
 }

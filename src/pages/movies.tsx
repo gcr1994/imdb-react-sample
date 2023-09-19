@@ -7,10 +7,7 @@ import {
   Typography,
   Grid,
 } from "@mui/material";
-import image from "next/image";
-import { QueryClientProvider, useQuery, QueryClient } from "react-query";
-
-const queryClient = new QueryClient();
+import { useQuery } from "react-query";
 
 export const Movies = () => {
   const MovieList = () => {
@@ -49,11 +46,9 @@ export const Movies = () => {
   };
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <Grid container spacing={2}>
-        <MovieList />
-      </Grid>
-    </QueryClientProvider>
+    <Grid container spacing={2}>
+      <MovieList />
+    </Grid>
   );
 };
 
