@@ -29,21 +29,6 @@ export const Login = () => {
     store.setToken(result.token);
   };
 
-  /* return (
-    <>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <label>
-          Email:
-          <input {...register("email")}></input>
-        </label>
-        <label>
-          Password:
-          <input type="password" {...register("password")}></input>
-        </label>
-        <button>Log in</button>
-      </form>
-    </>
-  ); */
   return (
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">

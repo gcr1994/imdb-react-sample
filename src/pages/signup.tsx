@@ -24,22 +24,6 @@ export const Signup = () => {
     const result = signup(data);
   };
 
-  /*   return (
-    <>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <label>
-          Email:
-          <input {...register("email")}></input>
-        </label>
-        <label>
-          Password:
-          <input type="password" {...register("password")}></input>
-        </label>
-        <button>Sign up</button>
-      </form>
-    </>
-  );
- */
   return (
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
