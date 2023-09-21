@@ -24,9 +24,14 @@ export const Login = () => {
   const { register, handleSubmit } = useForm();
   const store = useStore();
   const onSubmit = async (data: FieldValues) => {
-    const result = await login(data);
-    store.setUser(data.email);
-    store.setToken(result.token);
+    try {
+      const result = await login(data);
+      store.setUser(result.body);
+      store.setToken(result.token);
+      window.location.href = "/movies";
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (

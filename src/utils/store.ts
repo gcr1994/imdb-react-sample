@@ -2,7 +2,7 @@ import { User } from "@/types/user";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-type Store = {
+export type Store = {
   user: User | null;
   token: string | null;
 

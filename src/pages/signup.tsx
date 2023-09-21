@@ -21,8 +21,12 @@ const defaultTheme = createTheme();
 export const Signup = () => {
   const { register, handleSubmit } = useForm();
   const onSubmit = async (data: FieldValues) => {
-    const result = await signup(data);
-    window.location.href = "/login";
+    try {
+      const result = await signup(data);
+      window.location.href = "/login";
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -79,7 +83,7 @@ export const Signup = () => {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign In
+              Sign Up
             </Button>
           </Box>
         </Box>
