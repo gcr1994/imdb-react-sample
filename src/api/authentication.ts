@@ -19,7 +19,6 @@ export const login = async (
   data: FieldValues
 ): Promise<{ token: string; body: User }> => {
   const res = instance.post("/login", {
-    _id: data._id,
     email: data.email,
     password: data.password,
   });
@@ -27,6 +26,10 @@ export const login = async (
   const result = await res;
   console.log(result);
   console.log(result.data);
+  if (result.data.body.image) {
+    result.data.body.image =
+      process.env.NEXT_PUBLIC_AUTH_URL + "/" + result.data.body.image;
+  }
 
   console.log(result.data.body);
   return result.data as unknown as { token: string; body: User };
@@ -42,23 +45,22 @@ export const signup = async (data: FieldValues) => {
   return result;
 };
 
-export const putUser = async (user: User, token: string) => {
+export const putUser = async (user: User, file: File, token: string) => {
   console.log(user, token);
-  console.log(user.image);
+  console.log(!!user.image);
   console.log(JSON.stringify(user));
-  const res = instance.put(
-    "/user/profile",
-    { user },
-    {
-      headers: {
-        Authorization: "Bearer " + token,
-      },
-      params: {
-        id: user._id,
-      },
-    }
-  );
+
+  const formDataBody = new FormData();
+  formDataBody.append("image", file, file.name);
+  formDataBody.append("email", user.email);
+
+  const res = instance.put("/user/profile", formDataBody, {
+    headers: {
+      Authorization: "Bearer " + token,
+      ContentType: "multipart/form-data",
+    },
+  });
   const result = await res;
-  console.log(result);
+  console.log(result.data);
   return result;
 };

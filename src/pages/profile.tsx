@@ -1,12 +1,14 @@
 import { putUser } from "@/api/authentication";
+import ImageDropzone from "@/components/ImageDropzone";
 import { User } from "@/types/user";
 import useStore, { Store } from "@/utils/store";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 const Profile = () => {
   const store: Store = useStore();
   const [user, setUser] = useState<User>({} as User);
+  const [binFile, setBinFile] = useState<File>({} as File);
 
   useEffect(() => {
     if (store.user) {
@@ -15,7 +17,11 @@ const Profile = () => {
     }
   }, [store]);
 
-  const getBase64 = async (file: File | null): Promise<string> => {
+  const onDrop = useCallback((files: File[]) => {
+    setBinFile(files[0]);
+  }, []);
+
+  const getBase64 = async (file: File | Blob): Promise<string> => {
     if (file === null) Promise.reject();
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -34,7 +40,7 @@ const Profile = () => {
       if (!user) {
         return;
       }
-      const result = await putUser(user, store.token || "");
+      const result = await putUser(user, binFile, store.token || "");
       // store.setUser(user);
       console.log(result);
     } catch (err) {}
@@ -44,27 +50,13 @@ const Profile = () => {
     <>
       <h1>Your Profile</h1>
       <form onSubmit={onSubmit}>
-        <input
-          id="upload"
-          type="file"
-          accept="image/*"
-          onChange={async (event) => {
-            console.log(event.target.files);
-            store.setUser({
-              ...user,
-              image:
-                (event.target.files &&
-                  (await getBase64(event.target.files[0]))) ||
-                "",
-            });
-          }}
-        />
+        <ImageDropzone onDrop={onDrop} multiple={false}></ImageDropzone>
         {user.image ? (
           <Image
             src={user.image}
+            width={240}
+            height={240}
             alt="User image"
-            width={500}
-            height={500}
           ></Image>
         ) : null}
         <button> Save </button>

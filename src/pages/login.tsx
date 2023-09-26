@@ -28,7 +28,7 @@ export const Login = () => {
       const result = await login(data);
       store.setUser(result.body);
       store.setToken(result.token);
-      window.location.href = "/movies";
+      window.location.href = "/profile";
     } catch (err) {
       console.log(err);
     }
