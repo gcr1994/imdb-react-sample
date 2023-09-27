@@ -1,5 +1,5 @@
 import * as selenium from "selenium-webdriver";
-import { beforeEach, expect, test } from "vitest";
+import { beforeEach, afterEach, test } from "vitest";
 
 const MOCK_BROWSER_URL = "http://localhost:3000/";
 const browser = new selenium.Builder().forBrowser("chrome").build();
