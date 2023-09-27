@@ -40,8 +40,10 @@
   },
   "devDependencies": {
     "@types/jest": "^29.5.5",
+    "@types/selenium-webdriver": "^4.1.17",
     "@vitejs/plugin-react": "^4.1.0",
     "jsdom": "^22.1.0",
+    "selenium-webdriver": "^4.13.0",
     "vitest": "^0.34.5"
   }
 }
