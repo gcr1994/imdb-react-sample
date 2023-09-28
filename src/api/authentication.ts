@@ -52,6 +52,44 @@ export const putUser = async (user: User, file: File, token: string) => {
       ContentType: "multipart/form-data",
     },
   });
-  const result = await res;
+  const result = (await res).data;
+  return result;
+};
+
+export const addToFavorites = async (
+  user: User,
+  movieId: number,
+  token: string
+) => {
+  const res = instance.post(
+    "/user/favorites",
+    { movieId, email: user.email },
+    {
+      headers: {
+        Authorization: "Bearer " + token,
+        ContentType: "multipart/form-data",
+      },
+    }
+  );
+  const result = (await res).data;
+  return result;
+};
+
+export const removeFromFavorites = async (
+  user: User,
+  movieId: number,
+  token: string
+) => {
+  const res = instance.post(
+    "/user/favorites/remove",
+    { movieId, email: user.email },
+    {
+      headers: {
+        Authorization: "Bearer " + token,
+        ContentType: "multipart/form-data",
+      },
+    }
+  );
+  const result = (await res).data;
   return result;
 };
