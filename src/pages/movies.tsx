@@ -1,5 +1,6 @@
 import { addToFavorites, removeFromFavorites } from "@/api/authentication";
-import { getMovies } from "@/api/moviesApi";
+import { useMovieList } from "@/api/moviesApi";
+import { movie } from "@/types/movie";
 import useStore from "@/utils/store";
 import {
   Card,
@@ -10,15 +11,11 @@ import {
   Grid,
   Rating,
 } from "@mui/material";
-import { useEffect } from "react";
-import { useQuery } from "react-query";
+import { SyntheticEvent } from "react";
 
 export const Movies = () => {
   const MovieList = () => {
-    const { isLoading, error, data } = useQuery(["movies"], async () => {
-      const movies = await getMovies();
-      return movies;
-    });
+    const { isLoading, error, data } = useMovieList();
 
     const store = useStore();
 
@@ -27,6 +24,24 @@ export const Movies = () => {
     if (isLoading) return "Loading...";
 
     if (error) return "An error has occurred: " + error;
+
+    const handleFavoriteClick = (
+      _event: SyntheticEvent<Element, Event>,
+      newValue: number | null,
+      movie: movie
+    ) => {
+      const user = store.user!;
+      if (newValue) {
+        addToFavorites(user, movie.id, store.token!);
+        user.favorites?.push(movie.id);
+        store.setUser({ ...user });
+      } else {
+        const index = user.favorites?.findIndex((id) => id == movie.id);
+        removeFromFavorites(user, movie.id, store.token!);
+        user.favorites?.splice(index);
+        store.setUser({ ...user });
+      }
+    };
 
     return data?.map((movie) => (
       <>
@@ -49,20 +64,9 @@ export const Movies = () => {
                         value={
                           user.favorites?.find((id) => id == movie.id) ? 1 : 0
                         }
-                        onChange={(_event, newValue) => {
-                          if (newValue) {
-                            addToFavorites(user, movie.id, store.token!);
-                            user.favorites?.push(movie.id);
-                            store.setUser({ ...user });
-                          } else {
-                            const index = user.favorites?.findIndex(
-                              (id) => id == movie.id
-                            );
-                            removeFromFavorites(user, movie.id, store.token!);
-                            user.favorites?.splice(index);
-                            store.setUser({ ...user });
-                          }
-                        }}
+                        onChange={(_event, newValue) =>
+                          handleFavoriteClick(_event, newValue, movie)
+                        }
                       />
                     </>
                   ) : null}

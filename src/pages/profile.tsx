@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { putUser } from "@/api/authentication";
 import ImageDropzone from "@/components/ImageDropzone";
 import { User } from "@/types/user";
@@ -76,7 +77,7 @@ export default function Profile() {
           <Box sx={{ mb: 1 }}>
             <Typography level="title-md">Personal info</Typography>
             <Typography level="body-sm">
-              Customize how your profile information will apper to the networks.
+              Customize how your profile information will appear.
             </Typography>
           </Box>
           <Divider />
@@ -212,6 +213,17 @@ export default function Profile() {
           <Stack spacing={2} sx={{ my: 1 }}>
             {
               //TODO Favorite List
+            }
+          </Stack>
+        </Card>
+        <Card>
+          <Box sx={{ mb: 1 }}>
+            <Typography level="body-sm">Playlists</Typography>
+          </Box>
+          <Divider />
+          <Stack spacing={2} sx={{ my: 1 }}>
+            {
+              //TODO Playlist List
             }
           </Stack>
         </Card>

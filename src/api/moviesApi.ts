@@ -1,10 +1,19 @@
 import { movie } from "@/types/movie";
 import axios from "axios";
+import { useQuery } from "react-query";
 
 const instance = axios.create({ baseURL: process.env.NEXT_PUBLIC_API_URL });
 instance.defaults.headers.common["Accept"] = "application/json";
 instance.defaults.headers.common["Authorization"] =
   "Bearer " + process.env.NEXT_PUBLIC_API_RAT;
+
+export const useMovieList = () => {
+  const { isLoading, error, data } = useQuery(["movies"], async () => {
+    const movies = await getMovies();
+    return movies;
+  });
+  return { isLoading, error, data };
+};
 
 export const getMovies: () => Promise<movie[]> = async () => {
   try {
