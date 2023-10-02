@@ -20,6 +20,7 @@ import CardActions from "@mui/joy/CardActions";
 import CardOverflow from "@mui/joy/CardOverflow";
 
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
+import { FavoritesList } from "@/components/FavoritesList";
 
 export default function Profile() {
   const store: Store = useStore();
@@ -211,9 +212,7 @@ export default function Profile() {
           </Box>
           <Divider />
           <Stack spacing={2} sx={{ my: 1 }}>
-            {
-              //TODO Favorite List
-            }
+            <FavoritesList />
           </Stack>
         </Card>
         <Card>
