@@ -1,5 +1,6 @@
 import { addToFavorites, removeFromFavorites } from "@/api/authentication";
 import { useMovieList } from "@/api/moviesApi";
+import BasicModal from "@/components/Modal";
 import { movie } from "@/types/movie";
 import useStore from "@/utils/store";
 import {
@@ -68,6 +69,9 @@ export const Movies = () => {
                           handleFavoriteClick(_event, newValue, movie)
                         }
                       />
+                      <BasicModal buttonText="Save">
+                        <>{"list of playlists"}</>
+                      </BasicModal>
                     </>
                   ) : null}
                 </Typography>

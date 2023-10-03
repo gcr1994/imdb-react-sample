@@ -1,6 +1,5 @@
-import { useMovieList } from "@/api/moviesApi";
+import { getPlaylist } from "@/api/playlistApi";
 import { movie } from "@/types/movie";
-import useStore from "@/utils/store";
 import {
   Grid,
   Card,
@@ -10,17 +9,10 @@ import {
   Typography,
 } from "@mui/material";
 
-export const FavoritesList = () => {
-  const { user } = useStore();
-  const { data } = useMovieList();
+export const Playlist = async (id: string) => {
+  const movies = await getPlaylist(id);
 
-  const favoritesList: movie[] = [];
-  user?.favorites.forEach((movieId) => {
-    const movie = data?.find((movie) => movie.id === movieId);
-    if (movie) favoritesList.push(movie);
-  });
-
-  return favoritesList?.map((movie) => (
+  return movies?.map((movie: movie) => (
     <>
       <Grid key={movie.id} item xs={4}>
         <Card sx={{ maxWidth: 345 }}>
