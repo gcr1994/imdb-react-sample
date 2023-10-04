@@ -93,7 +93,11 @@ export default function Profile() {
                 maxHeight={200}
                 sx={{ flex: 1, minWidth: 120, borderRadius: "100%" }}
               >
-                <img src={user?.image || ""} loading="lazy" alt="" />
+                <img
+                  src={binFile.webkitRelativePath || user?.image || ""}
+                  loading="lazy"
+                  alt=""
+                />
               </AspectRatio>
               <IconButton
                 aria-label="upload new picture"
@@ -110,10 +114,7 @@ export default function Profile() {
                   boxShadow: "sm",
                 }}
               >
-                {
-                  //TODO use ImageDropZone
-                }
-                <EditRoundedIcon />
+                <ImageDropzone onDrop={onDrop} />
               </IconButton>
             </Stack>
             <Stack spacing={2} sx={{ flexGrow: 1 }}>

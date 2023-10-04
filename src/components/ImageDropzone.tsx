@@ -1,4 +1,5 @@
 import { DropzoneOptions, useDropzone } from "react-dropzone";
+import EditRoundedIcon from "@mui/icons-material/EditRounded";
 
 export default function ImageDropzone(props: DropzoneOptions | undefined) {
   const { getRootProps, getInputProps, isDragAccept, isDragActive } =
@@ -11,7 +12,7 @@ export default function ImageDropzone(props: DropzoneOptions | undefined) {
     <div className="container">
       <div {...getRootProps({ className: "dropzone" })}>
         <input {...getInputProps()} />
-        {!isDragActive && <p>Drop image here...</p>}
+        {!isDragActive && <EditRoundedIcon />}
       </div>
     </div>
   );
