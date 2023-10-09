@@ -19,13 +19,15 @@ import Card from "@mui/joy/Card";
 import CardActions from "@mui/joy/CardActions";
 import CardOverflow from "@mui/joy/CardOverflow";
 
-import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import { FavoritesList } from "@/components/FavoritesList";
+import { getImageToBase64 } from "@/utils/fileUtils";
+import { Playlists } from "@/components/Playlists";
 
 export default function Profile() {
   const store: Store = useStore();
   const [user, setUser] = useState<User>({} as User);
   const [binFile, setBinFile] = useState<File>({} as File);
+  const [tempImage, setTempImage] = useState<string>("");
 
   useEffect(() => {
     if (store.user) {
@@ -34,8 +36,11 @@ export default function Profile() {
     }
   }, [store]);
 
-  const onDrop = useCallback((files: File[]) => {
-    setBinFile(files[0]);
+  const onDrop = useCallback(async (files: File[]) => {
+    const currentFile = files[0];
+    const imageString = (await getImageToBase64(currentFile)) as string;
+    setTempImage(imageString);
+    setBinFile(currentFile);
   }, []);
 
   const onSubmit = async () => {
@@ -94,7 +99,7 @@ export default function Profile() {
                 sx={{ flex: 1, minWidth: 120, borderRadius: "100%" }}
               >
                 <img
-                  src={binFile.webkitRelativePath || user?.image || ""}
+                  src={tempImage || user?.image || ""}
                   loading="lazy"
                   alt=""
                 />
@@ -152,7 +157,11 @@ export default function Profile() {
                   maxHeight={108}
                   sx={{ flex: 1, minWidth: 108, borderRadius: "100%" }}
                 >
-                  <img src={user?.image || ""} loading="lazy" alt="" />
+                  <img
+                    src={tempImage || user?.image || ""}
+                    loading="lazy"
+                    alt=""
+                  />
                 </AspectRatio>
                 <IconButton
                   aria-label="upload new picture"
@@ -169,10 +178,7 @@ export default function Profile() {
                     boxShadow: "sm",
                   }}
                 >
-                  {
-                    //TODO use ImageDropZone
-                  }
-                  <EditRoundedIcon />
+                  <ImageDropzone onDrop={onDrop} />
                 </IconButton>
               </Stack>
               <Stack spacing={1} sx={{ flexGrow: 1 }}>
@@ -222,9 +228,7 @@ export default function Profile() {
           </Box>
           <Divider />
           <Stack spacing={2} sx={{ my: 1 }}>
-            {
-              //TODO Playlist List
-            }
+            <Playlists />
           </Stack>
         </Card>
       </Stack>

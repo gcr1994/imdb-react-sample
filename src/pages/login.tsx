@@ -26,7 +26,8 @@ export const Login = () => {
   const onSubmit = async (data: FieldValues) => {
     try {
       const result = await login(data);
-      store.setUser(result.body);
+      store.setUser(result.body.user);
+      store.setPlaylists(result.body.playlists);
       store.setToken(result.token);
       window.location.href = "/profile";
     } catch (err) {

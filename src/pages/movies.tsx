@@ -70,7 +70,7 @@ export const Movies = () => {
                         }
                       />
                       <BasicModal buttonText="Save">
-                        <>{"list of playlists"}</>
+                        <>{"list of playlists TODO"}</>
                       </BasicModal>
                     </>
                   ) : null}

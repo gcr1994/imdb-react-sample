@@ -1,6 +1,7 @@
 import { FieldValues } from "react-hook-form";
 import axios from "axios";
 import { User } from "@/types/user";
+import { Playlist } from "@/types/playlist";
 
 const instance = axios.create({ baseURL: process.env.NEXT_PUBLIC_AUTH_URL });
 
@@ -17,7 +18,7 @@ instance.interceptors.response.use(
 
 export const login = async (
   data: FieldValues
-): Promise<{ token: string; body: User }> => {
+): Promise<{ token: string; body: { user: User; playlists: Playlist[] } }> => {
   const res = instance.post("/login", {
     email: data.email,
     password: data.password,
@@ -29,7 +30,10 @@ export const login = async (
       process.env.NEXT_PUBLIC_AUTH_URL + "/" + result.data.body.image;
   }
 
-  return result.data as unknown as { token: string; body: User };
+  return result.data as unknown as {
+    token: string;
+    body: { user: User; playlists: Playlist[] };
+  };
 };
 
 export const signup = async (data: FieldValues) => {
