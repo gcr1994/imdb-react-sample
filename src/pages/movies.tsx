@@ -11,16 +11,55 @@ import {
   Typography,
   Grid,
   Rating,
+  Button,
+  FormControl,
+  FormLabel,
+  Radio,
+  Input,
 } from "@mui/material";
-import { SyntheticEvent } from "react";
+
+import { FormEvent, SyntheticEvent, useState } from "react";
+import { Playlist } from "@/types/playlist";
+import { putPlaylist } from "@/api/playlistApi";
 
 export const Movies = () => {
   const MovieList = () => {
     const { isLoading, error, data } = useMovieList();
 
+    const [isAddPlaylist, setIsAddPlaylist] = useState(false);
+
     const store = useStore();
 
-    const user = store.user;
+    const { user, playlists, setPlaylists } = store;
+
+    const handleCreatePlaylist = () => {
+      setIsAddPlaylist(true);
+    };
+
+    const handleChangeRadioButton = async (
+      playlist: Playlist,
+      movie: movie
+    ) => {
+      const movieIndex = playlist.movies.findIndex(
+        (playlistMovie) => movie.id === playlistMovie
+      );
+      if (movieIndex !== -1) {
+        playlist.movies.push(movie.id);
+      } else {
+        playlist.movies.splice(movieIndex);
+      }
+      const updatedPlaylist = await putPlaylist(user!, playlist, store.token!);
+      let findPlaylist = playlists?.find(
+        (list) => list._id === updatedPlaylist._id
+      );
+      findPlaylist = updatedPlaylist;
+      setPlaylists(playlists);
+    };
+
+    const handleAddPlaylist = (event: FormEvent<HTMLButtonElement>) => {
+      const form = event.currentTarget.value;
+      console.log(form);
+    };
 
     if (isLoading) return "Loading...";
 
@@ -70,7 +109,52 @@ export const Movies = () => {
                         }
                       />
                       <BasicModal buttonText="Save">
-                        <>{"list of playlists TODO"}</>
+                        <>
+                          {!isAddPlaylist ? (
+                            <>
+                              <FormControl>
+                                <FormLabel id="radio-buttons-group">
+                                  Add to playlist:
+                                </FormLabel>
+
+                                {playlists?.map((playlist) => (
+                                  <>
+                                    <Radio
+                                      checked={
+                                        playlist.movies.find(
+                                          (playlistMovie) =>
+                                            playlistMovie === movie.id
+                                        ) !== undefined
+                                      }
+                                      onChange={() =>
+                                        handleChangeRadioButton(playlist, movie)
+                                      }
+                                      value={playlist._id}
+                                      name="radio-buttons"
+                                      inputProps={{
+                                        "aria-label": playlist.name,
+                                      }}
+                                    />
+                                  </>
+                                ))}
+                              </FormControl>
+
+                              <Button onClick={handleCreatePlaylist}>
+                                Add Playlist
+                              </Button>
+                            </>
+                          ) : (
+                            <>
+                              <FormControl>
+                                <FormLabel id="create-playlist">
+                                  Playlist Name:
+                                </FormLabel>
+                                <Input type="string" placeholder="Name" />
+                                <Button onSubmit={handleAddPlaylist} />
+                              </FormControl>
+                            </>
+                          )}
+                        </>
                       </BasicModal>
                     </>
                   ) : null}

@@ -71,7 +71,6 @@ export const addToFavorites = async (
     {
       headers: {
         Authorization: "Bearer " + token,
-        ContentType: "multipart/form-data",
       },
     }
   );
@@ -90,7 +89,6 @@ export const removeFromFavorites = async (
     {
       headers: {
         Authorization: "Bearer " + token,
-        ContentType: "multipart/form-data",
       },
     }
   );
