@@ -6,8 +6,19 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
-
+import useStore from "@/utils/store";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 export default function ButtonBar() {
+  const { user, token } = useStore();
+  const router = useRouter();
+
+  const [isAuth, setIsAuth] = useState(false);
+
+  useEffect(() => {
+    if (user && token) setIsAuth(true);
+  }, [token, user]);
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
@@ -29,9 +40,16 @@ export default function ButtonBar() {
               Movies
             </Button>
           </Typography>
-          <Button href="/login" color="inherit">
-            Login
-          </Button>
+
+          {isAuth ? (
+            <Button onClick={() => router.push("/profile")} color="inherit">
+              Profile
+            </Button>
+          ) : (
+            <Button onClick={() => router.push("/login")} color="inherit">
+              Login
+            </Button>
+          )}
         </Toolbar>
       </AppBar>
     </Box>

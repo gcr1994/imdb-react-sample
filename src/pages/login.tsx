@@ -17,10 +17,12 @@ import {
 } from "@mui/material";
 import { FieldValues, useForm } from "react-hook-form";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import { useRouter } from "next/navigation";
 
 const defaultTheme = createTheme();
 
 export const Login = () => {
+  const router = useRouter();
   const { register, handleSubmit } = useForm();
   const store = useStore();
   const onSubmit = async (data: FieldValues) => {
@@ -29,7 +31,7 @@ export const Login = () => {
       store.setUser(result.body.user);
       store.setPlaylists(result.body.playlists);
       store.setToken(result.token);
-      window.location.href = "/profile";
+      router.push("/profile");
     } catch (err) {
       console.log(err);
     }

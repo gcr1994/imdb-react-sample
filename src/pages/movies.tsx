@@ -16,21 +16,33 @@ import {
   FormLabel,
   Radio,
   Input,
+  FormControlLabel,
 } from "@mui/material";
 
 import { FormEvent, SyntheticEvent, useState } from "react";
 import { Playlist } from "@/types/playlist";
-import { putPlaylist } from "@/api/playlistApi";
+import {
+  addMovieToPlaylist,
+  postPlaylist,
+  putPlaylist,
+  removeMovieFromPlaylist,
+} from "@/api/playlistApi";
 
 export const Movies = () => {
   const MovieList = () => {
     const { isLoading, error, data } = useMovieList();
 
+    const [playlistName, setPlaylistName] = useState("");
+
+    const [open, setOpen] = useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+
     const [isAddPlaylist, setIsAddPlaylist] = useState(false);
 
     const store = useStore();
 
-    const { user, playlists, setPlaylists } = store;
+    const { user, token, playlists, setPlaylists } = store;
 
     const handleCreatePlaylist = () => {
       setIsAddPlaylist(true);
@@ -43,12 +55,25 @@ export const Movies = () => {
       const movieIndex = playlist.movies.findIndex(
         (playlistMovie) => movie.id === playlistMovie
       );
-      if (movieIndex !== -1) {
+      console.log(playlist.movies);
+      let updatedPlaylist: Playlist;
+      if (movieIndex === -1) {
         playlist.movies.push(movie.id);
+        updatedPlaylist = await addMovieToPlaylist(
+          user!,
+          playlist._id,
+          movie.id,
+          token!
+        );
       } else {
         playlist.movies.splice(movieIndex);
+        updatedPlaylist = await removeMovieFromPlaylist(
+          user!,
+          playlist._id,
+          movie.id,
+          token!
+        );
       }
-      const updatedPlaylist = await putPlaylist(user!, playlist, store.token!);
       let findPlaylist = playlists?.find(
         (list) => list._id === updatedPlaylist._id
       );
@@ -56,9 +81,19 @@ export const Movies = () => {
       setPlaylists(playlists);
     };
 
-    const handleAddPlaylist = (event: FormEvent<HTMLButtonElement>) => {
-      const form = event.currentTarget.value;
-      console.log(form);
+    const handleAddPlaylist = async (_event: FormEvent<HTMLButtonElement>) => {
+      if (user && token) {
+        try {
+          const res = await postPlaylist(user, playlistName, token);
+          let newPlaylists = playlists ? [...playlists] : [];
+          newPlaylists.push(res);
+          setPlaylists(newPlaylists);
+          setIsAddPlaylist(false);
+          setPlaylistName("");
+        } catch (err) {
+          console.log(err);
+        }
+      }
     };
 
     if (isLoading) return "Loading...";
@@ -108,40 +143,67 @@ export const Movies = () => {
                           handleFavoriteClick(_event, newValue, movie)
                         }
                       />
-                      <BasicModal buttonText="Save">
+                      <BasicModal
+                        open={open}
+                        setOpen={setOpen}
+                        handleClose={handleClose}
+                        handleOpen={handleOpen}
+                        buttonText="Save"
+                      >
                         <>
                           {!isAddPlaylist ? (
                             <>
-                              <FormControl>
-                                <FormLabel id="radio-buttons-group">
-                                  Add to playlist:
-                                </FormLabel>
+                              <Grid container xs={12}>
+                                <FormControl>
+                                  <Grid xs={12}>
+                                    <FormLabel id="radio-buttons-group">
+                                      Add to playlist:
+                                    </FormLabel>
+                                  </Grid>
 
-                                {playlists?.map((playlist) => (
-                                  <>
-                                    <Radio
-                                      checked={
-                                        playlist.movies.find(
-                                          (playlistMovie) =>
-                                            playlistMovie === movie.id
-                                        ) !== undefined
-                                      }
-                                      onChange={() =>
-                                        handleChangeRadioButton(playlist, movie)
-                                      }
-                                      value={playlist._id}
-                                      name="radio-buttons"
-                                      inputProps={{
-                                        "aria-label": playlist.name,
-                                      }}
-                                    />
-                                  </>
-                                ))}
-                              </FormControl>
+                                  {playlists?.map((playlist) => (
+                                    <>
+                                      <Grid container xs={12}>
+                                        <Grid xs={12}>
+                                          <FormControlLabel
+                                            control={
+                                              <Radio
+                                                checked={
+                                                  playlist.movies.find(
+                                                    (playlistMovie) =>
+                                                      playlistMovie === movie.id
+                                                  ) !== undefined
+                                                }
+                                                onChange={() =>
+                                                  handleChangeRadioButton(
+                                                    playlist,
+                                                    movie
+                                                  )
+                                                }
+                                                value={playlist._id}
+                                              />
+                                            }
+                                            label={playlist.name}
+                                          />
+                                        </Grid>
+                                      </Grid>
+                                    </>
+                                  ))}
+                                  <Grid container xs={12}>
+                                    <Grid xs={4}>
+                                      <Button onClick={() => setOpen(false)}>
+                                        Close
+                                      </Button>
+                                    </Grid>
 
-                              <Button onClick={handleCreatePlaylist}>
-                                Add Playlist
-                              </Button>
+                                    <Grid xs={8}>
+                                      <Button onClick={handleCreatePlaylist}>
+                                        Add Playlist
+                                      </Button>
+                                    </Grid>
+                                  </Grid>
+                                </FormControl>
+                              </Grid>
                             </>
                           ) : (
                             <>
@@ -149,8 +211,23 @@ export const Movies = () => {
                                 <FormLabel id="create-playlist">
                                   Playlist Name:
                                 </FormLabel>
-                                <Input type="string" placeholder="Name" />
-                                <Button onSubmit={handleAddPlaylist} />
+                                <Input
+                                  id="addPlaylist"
+                                  type="text"
+                                  value={playlistName}
+                                  onChange={(e) => {
+                                    setPlaylistName(e.currentTarget.value);
+                                  }}
+                                  placeholder="Name"
+                                />
+                                <Button
+                                  onClick={(event) => handleAddPlaylist(event)}
+                                >
+                                  Add
+                                </Button>
+                                <Button onClick={() => setIsAddPlaylist(false)}>
+                                  Back
+                                </Button>
                               </FormControl>
                             </>
                           )}

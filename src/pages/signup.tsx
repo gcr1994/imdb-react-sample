@@ -15,15 +15,17 @@ import {
 } from "@mui/material";
 import { FieldValues, useForm } from "react-hook-form";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import { redirect, useRouter } from "next/navigation";
 
 const defaultTheme = createTheme();
 
 export const Signup = () => {
+  const router = useRouter();
   const { register, handleSubmit } = useForm();
   const onSubmit = async (data: FieldValues) => {
     try {
       const result = await signup(data);
-      window.location.href = "/login";
+      router.push("/login");
     } catch (err) {
       console.log(err);
     }

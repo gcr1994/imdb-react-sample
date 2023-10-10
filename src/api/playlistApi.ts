@@ -16,7 +16,7 @@ instance.interceptors.response.use(
 );
 
 export const getPlaylist = async (id: string) => {
-  const res = instance.get("playlist/" + id);
+  const res = instance.get("playlists/" + id);
   const data = await res;
   return data.data as { movies: number[]; name: string };
 };
@@ -27,7 +27,7 @@ export const putPlaylist = async (
   token: string
 ) => {
   const res = instance.put(
-    "playlist/" + playlist._id,
+    "user/playlists/" + playlist._id,
     { movies: playlist.movies, email: user.email },
     {
       headers: {
@@ -41,12 +41,12 @@ export const putPlaylist = async (
 
 export const postPlaylist = async (
   user: User,
-  playlistName: Playlist,
+  playlistName: string,
   token: string
 ) => {
-  const res = instance.put(
-    "playlist/",
-    { name: playlistName, email: user.email },
+  const res = instance.post(
+    "user/playlists/",
+    { playlistName: playlistName, email: user.email },
     {
       headers: {
         Authorization: "Bearer " + token,
@@ -54,5 +54,43 @@ export const postPlaylist = async (
     }
   );
   const data = await res;
-  return data.data as Playlist;
+  return data.data.playlist as Playlist;
+};
+
+export const addMovieToPlaylist = async (
+  user: User,
+  playlistId: string,
+  movieId: number,
+  token: string
+) => {
+  const res = instance.post(
+    "user/playlists/addMovie",
+    { playlistId, movieId, email: user.email },
+    {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    }
+  );
+  const data = await res;
+  return data.data.playlist as Playlist;
+};
+
+export const removeMovieFromPlaylist = async (
+  user: User,
+  playlistId: string,
+  movieId: number,
+  token: string
+) => {
+  const res = instance.post(
+    "user/playlists/removeMovie",
+    { playlistId, movieId, email: user.email },
+    {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    }
+  );
+  const data = await res;
+  return data.data.playlist as Playlist;
 };

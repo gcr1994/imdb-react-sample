@@ -19,14 +19,18 @@ const style = {
 export default function BasicModal({
   buttonText,
   children,
+  open,
+  setOpen,
+  handleOpen,
+  handleClose,
 }: {
   buttonText: string;
   children: React.ReactElement<any, string> | null;
+  open: boolean;
+  setOpen: (value: boolean) => void;
+  handleOpen: () => void;
+  handleClose: () => void;
 }) {
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-
   return (
     <div>
       <Button onClick={handleOpen}>{buttonText}</Button>
