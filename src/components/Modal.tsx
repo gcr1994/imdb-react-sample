@@ -3,6 +3,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
+import { useState } from "react";
 
 const style = {
   position: "absolute" as "absolute",
@@ -19,18 +20,14 @@ const style = {
 export default function BasicModal({
   buttonText,
   children,
-  open,
-  setOpen,
-  handleOpen,
-  handleClose,
 }: {
   buttonText: string;
   children: React.ReactElement<any, string> | null;
-  open: boolean;
-  setOpen: (value: boolean) => void;
-  handleOpen: () => void;
-  handleClose: () => void;
 }) {
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   return (
     <div>
       <Button onClick={handleOpen}>{buttonText}</Button>
@@ -40,7 +37,12 @@ export default function BasicModal({
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>{children}</Box>
+        <>
+          <Box sx={style}>
+            {children}
+            <Button onClick={() => setOpen(false)}>Close</Button>
+          </Box>
+        </>
       </Modal>
     </div>
   );

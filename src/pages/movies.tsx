@@ -14,9 +14,9 @@ import {
   Button,
   FormControl,
   FormLabel,
-  Radio,
   Input,
   FormControlLabel,
+  Checkbox,
 } from "@mui/material";
 
 import { FormEvent, SyntheticEvent, useState } from "react";
@@ -24,7 +24,6 @@ import { Playlist } from "@/types/playlist";
 import {
   addMovieToPlaylist,
   postPlaylist,
-  putPlaylist,
   removeMovieFromPlaylist,
 } from "@/api/playlistApi";
 
@@ -34,15 +33,19 @@ export const Movies = () => {
 
     const [playlistName, setPlaylistName] = useState("");
 
-    const [open, setOpen] = useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
-
     const [isAddPlaylist, setIsAddPlaylist] = useState(false);
 
     const store = useStore();
 
     const { user, token, playlists, setPlaylists } = store;
+
+    const handleIsChecked = (playlist: Playlist, movie: movie): boolean => {
+      return (
+        playlist.movies.findIndex(
+          (playlistMovie) => playlistMovie === movie.id
+        ) !== -1
+      );
+    };
 
     const handleCreatePlaylist = () => {
       setIsAddPlaylist(true);
@@ -78,7 +81,9 @@ export const Movies = () => {
         (list) => list._id === updatedPlaylist._id
       );
       findPlaylist = updatedPlaylist;
-      setPlaylists(playlists);
+      console.log("updated to" + playlist.movies);
+
+      setPlaylists([...(playlists ?? [])]);
     };
 
     const handleAddPlaylist = async (_event: FormEvent<HTMLButtonElement>) => {
@@ -143,13 +148,7 @@ export const Movies = () => {
                           handleFavoriteClick(_event, newValue, movie)
                         }
                       />
-                      <BasicModal
-                        open={open}
-                        setOpen={setOpen}
-                        handleClose={handleClose}
-                        handleOpen={handleOpen}
-                        buttonText="Save"
-                      >
+                      <BasicModal buttonText="Save">
                         <>
                           {!isAddPlaylist ? (
                             <>
@@ -167,13 +166,11 @@ export const Movies = () => {
                                         <Grid xs={12}>
                                           <FormControlLabel
                                             control={
-                                              <Radio
-                                                checked={
-                                                  playlist.movies.find(
-                                                    (playlistMovie) =>
-                                                      playlistMovie === movie.id
-                                                  ) !== undefined
-                                                }
+                                              <Checkbox
+                                                checked={handleIsChecked(
+                                                  playlist,
+                                                  movie
+                                                )}
                                                 onChange={() =>
                                                   handleChangeRadioButton(
                                                     playlist,
@@ -190,11 +187,7 @@ export const Movies = () => {
                                     </>
                                   ))}
                                   <Grid container xs={12}>
-                                    <Grid xs={4}>
-                                      <Button onClick={() => setOpen(false)}>
-                                        Close
-                                      </Button>
-                                    </Grid>
+                                    <Grid xs={4}></Grid>
 
                                     <Grid xs={8}>
                                       <Button onClick={handleCreatePlaylist}>
