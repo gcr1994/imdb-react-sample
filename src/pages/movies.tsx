@@ -1,4 +1,7 @@
-import { addToFavorites, removeFromFavorites } from "@/api/authentication";
+import {
+  addToFavoriteMovies,
+  removeFromFavoriteMovies,
+} from "@/api/authentication";
 import { useMovieList } from "@/api/moviesApi";
 import BasicModal from "@/components/Modal";
 import { movie } from "@/types/movie";
@@ -112,12 +115,12 @@ export const Movies = () => {
     ) => {
       const user = store.user!;
       if (newValue) {
-        addToFavorites(user, movie.id, store.token!);
+        addToFavoriteMovies(user, movie.id, store.token!);
         user.favoriteMovies?.push(movie.id);
         store.setUser({ ...user });
       } else {
         const index = user.favoriteMovies?.findIndex((id) => id == movie.id);
-        removeFromFavorites(user, movie.id, store.token!);
+        removeFromFavoriteMovies(user, movie.id, store.token!);
         user.favoriteMovies?.splice(index);
         store.setUser({ ...user });
       }
