@@ -113,12 +113,12 @@ export const Movies = () => {
       const user = store.user!;
       if (newValue) {
         addToFavorites(user, movie.id, store.token!);
-        user.favorites?.push(movie.id);
+        user.favoriteMovies?.push(movie.id);
         store.setUser({ ...user });
       } else {
-        const index = user.favorites?.findIndex((id) => id == movie.id);
+        const index = user.favoriteMovies?.findIndex((id) => id == movie.id);
         removeFromFavorites(user, movie.id, store.token!);
-        user.favorites?.splice(index);
+        user.favoriteMovies?.splice(index);
         store.setUser({ ...user });
       }
     };
@@ -142,7 +142,9 @@ export const Movies = () => {
                         name="simple-controlled"
                         max={1}
                         value={
-                          user.favorites?.find((id) => id == movie.id) ? 1 : 0
+                          user.favoriteMovies?.find((id) => id == movie.id)
+                            ? 1
+                            : 0
                         }
                         onChange={(_event, newValue) =>
                           handleFavoriteClick(_event, newValue, movie)

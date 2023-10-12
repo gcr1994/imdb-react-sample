@@ -60,13 +60,13 @@ export const putUser = async (user: User, file: File, token: string) => {
   return result;
 };
 
-export const addToFavorites = async (
+export const addToFavoriteMovies = async (
   user: User,
   movieId: number,
   token: string
 ) => {
   const res = instance.post(
-    "/user/favorites",
+    "/user/favoriteMovies",
     { movieId, email: user.email },
     {
       headers: {
@@ -78,14 +78,50 @@ export const addToFavorites = async (
   return result;
 };
 
-export const removeFromFavorites = async (
+export const removeFromFavoriteMovies = async (
   user: User,
   movieId: number,
   token: string
 ) => {
   const res = instance.post(
-    "/user/favorites/remove",
+    "/user/favoriteMovies/remove",
     { movieId, email: user.email },
+    {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    }
+  );
+  const result = (await res).data;
+  return result;
+};
+
+export const addToFavoriteSeries = async (
+  user: User,
+  serieId: number,
+  token: string
+) => {
+  const res = instance.post(
+    "/user/favoriteSeries",
+    { serieId, email: user.email },
+    {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    }
+  );
+  const result = (await res).data;
+  return result;
+};
+
+export const removeFromFavoriteSeries = async (
+  user: User,
+  serieId: number,
+  token: string
+) => {
+  const res = instance.post(
+    "/user/favoriteSeries/remove",
+    { serieId, email: user.email },
     {
       headers: {
         Authorization: "Bearer " + token,

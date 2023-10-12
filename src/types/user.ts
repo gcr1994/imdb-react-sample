@@ -2,5 +2,6 @@ export type User = {
   _id?: string;
   email: string;
   image: string;
-  favorites: number[];
+  favoriteMovies: number[];
+  favoriteSeries: number[];
 };

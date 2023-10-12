@@ -15,7 +15,7 @@ export const FavoritesList = () => {
   const { data } = useMovieList();
 
   const favoritesList: movie[] = [];
-  user?.favorites?.forEach((movieId) => {
+  user?.favoriteMovies?.forEach((movieId) => {
     const movie = data?.find((movie) => movie.id === movieId);
     if (movie) favoritesList.push(movie);
   });
