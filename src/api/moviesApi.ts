@@ -1,4 +1,4 @@
-import { movie } from "@/types/movie";
+import { Movie, Serie } from "@/types/movie";
 import axios from "axios";
 import { useQuery } from "react-query";
 
@@ -15,21 +15,39 @@ export const useMovieList = () => {
   return { isLoading, error, data };
 };
 
-export const getMovies: () => Promise<movie[]> = async () => {
+export const useSerieList = () => {
+  const { isLoading, error, data } = useQuery(["series"], async () => {
+    const series = await getSeries();
+    return series;
+  });
+  return { isLoading, error, data };
+};
+
+export const getMovies: () => Promise<Movie[]> = async () => {
   try {
     const response = instance.get("discover/movie");
     const data = await response;
-    return data.data.results as movie[];
+    return data.data.results as Movie[];
   } catch (err) {
     throw err;
   }
 };
 
-export const getMovieById: (id: string) => Promise<movie> = async (id) => {
+export const getSeries: () => Promise<Serie[]> = async () => {
+  try {
+    const response = instance.get("tv/popular");
+    const data = await response;
+    return data.data.results as Serie[];
+  } catch (err) {
+    throw err;
+  }
+};
+
+export const getMovieById: (id: string) => Promise<Movie> = async (id) => {
   try {
     const response = instance.get("movie/" + id);
     const data = await response;
-    return data.data as movie;
+    return data.data as Movie;
   } catch (err) {
     throw err;
   }

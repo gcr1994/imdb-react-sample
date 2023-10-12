@@ -7,7 +7,7 @@ import { CardActionArea } from "@mui/material";
 import { useRouter } from "next/router";
 import { useQuery } from "react-query";
 import { getMovieById } from "@/api/moviesApi";
-import { movie } from "@/types/movie";
+import { Movie as movie } from "@/types/movie";
 
 export const Movie = () => {
   const router = useRouter();

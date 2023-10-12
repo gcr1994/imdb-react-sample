@@ -1,11 +1,8 @@
-import { getPlaylist } from "@/api/playlistApi";
-import { movie } from "@/types/movie";
 import useStore from "@/utils/store";
 import {
   Grid,
   Card,
   CardActionArea,
-  CardMedia,
   CardContent,
   Typography,
 } from "@mui/material";

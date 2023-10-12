@@ -4,7 +4,7 @@ import {
 } from "@/api/authentication";
 import { useMovieList } from "@/api/moviesApi";
 import BasicModal from "@/components/Modal";
-import { movie } from "@/types/movie";
+import { Movie } from "@/types/movie";
 import useStore from "@/utils/store";
 import {
   Card,
@@ -42,7 +42,7 @@ export const Movies = () => {
 
     const { user, token, playlists, setPlaylists } = store;
 
-    const handleIsChecked = (playlist: Playlist, movie: movie): boolean => {
+    const handleIsChecked = (playlist: Playlist, movie: Movie): boolean => {
       return (
         playlist.movies.findIndex(
           (playlistMovie) => playlistMovie === movie.id
@@ -56,7 +56,7 @@ export const Movies = () => {
 
     const handleChangeRadioButton = async (
       playlist: Playlist,
-      movie: movie
+      movie: Movie
     ) => {
       const movieIndex = playlist.movies.findIndex(
         (playlistMovie) => movie.id === playlistMovie
@@ -111,7 +111,7 @@ export const Movies = () => {
     const handleFavoriteClick = (
       _event: SyntheticEvent<Element, Event>,
       newValue: number | null,
-      movie: movie
+      movie: Movie
     ) => {
       const user = store.user!;
       if (newValue) {

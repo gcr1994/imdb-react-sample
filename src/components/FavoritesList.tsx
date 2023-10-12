@@ -1,5 +1,5 @@
-import { useMovieList } from "@/api/moviesApi";
-import { movie } from "@/types/movie";
+import { useMovieList, useSerieList } from "@/api/moviesApi";
+import { Movie, Serie } from "@/types/movie";
 import useStore from "@/utils/store";
 import {
   Grid,
@@ -10,32 +10,45 @@ import {
   Typography,
 } from "@mui/material";
 
-export const FavoritesList = () => {
+export const FavoritesList = ({ showMovies }: { showMovies: boolean }) => {
   const { user } = useStore();
-  const { data } = useMovieList();
+  const movies = useMovieList().data;
+  const series = useSerieList().data;
 
-  const favoritesList: movie[] = [];
-  user?.favoriteMovies?.forEach((movieId) => {
-    const movie = data?.find((movie) => movie.id === movieId);
-    if (movie) favoritesList.push(movie);
-  });
+  let favoriteMovies: Movie[] = [];
+  let favoriteSeries: Serie[] = [];
+  if (showMovies) {
+    user?.favoriteMovies?.forEach((movieId) => {
+      const movie = movies?.find((movie) => movie.id === movieId);
+      if (movie) favoriteMovies.push(movie);
+    });
+  } else {
+    user?.favoriteSeries?.forEach((serieId) => {
+      const serie = series?.find((serie) => serie.id === serieId);
+      if (serie) favoriteSeries.push(serie);
+    });
+  }
 
-  return favoritesList?.map((movie) => (
+  const favorites = showMovies ? favoriteMovies : favoriteSeries;
+
+  return favorites?.map((favorite) => (
     <>
-      <Grid key={movie.id} item xs={4}>
+      <Grid key={favorite.id} item xs={4}>
         <Card sx={{ maxWidth: 345 }}>
           <CardActionArea>
             <CardMedia
               component="img"
               height="140"
-              image={process.env.NEXT_PUBLIC_TMBD_IMG_URL + movie.poster_path}
+              image={
+                process.env.NEXT_PUBLIC_TMBD_IMG_URL + favorite.poster_path
+              }
             />
             <CardContent>
               <Typography gutterBottom variant="h5" component="div">
-                {movie.title}
+                {favorite.title}
               </Typography>
               <Typography variant="body2" color="text.secondary">
-                {movie.overview}
+                {favorite.overview}
               </Typography>
             </CardContent>
           </CardActionArea>

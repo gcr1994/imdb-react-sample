@@ -29,6 +29,8 @@ export default function Profile() {
   const [binFile, setBinFile] = useState<File>({} as File);
   const [tempImage, setTempImage] = useState<string>("");
 
+  const [showMovies, setShowMovies] = useState(true);
+
   useEffect(() => {
     if (store.user) {
       console.log(store.user);
@@ -214,12 +216,20 @@ export default function Profile() {
           </CardOverflow>
         </Card>
         <Card>
+          <Box>
+            <Stack direction="row">
+              <Button onClick={() => setShowMovies(true)}>Movies</Button>
+              <Button onClick={() => setShowMovies(false)}>Series</Button>
+            </Stack>
+          </Box>
           <Box sx={{ mb: 1 }}>
-            <Typography level="body-sm">Favorite movies</Typography>
+            <Typography level="body-sm">
+              {showMovies ? "Favorite Movies" : "Favorite Series"}
+            </Typography>
           </Box>
           <Divider />
           <Stack spacing={2} sx={{ my: 1 }}>
-            <FavoritesList />
+            <FavoritesList showMovies={showMovies} />
           </Stack>
         </Card>
         <Card>
