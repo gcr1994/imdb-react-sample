@@ -6,12 +6,14 @@ import Typography from "@mui/material/Typography";
 import { CardActionArea } from "@mui/material";
 import { useRouter } from "next/router";
 import { useQuery } from "react-query";
-import { getMovieById } from "@/api/moviesApi";
+import { getMovieById, useMovieCredits } from "@/api/moviesApi";
 import { Movie as movie } from "@/types/movie";
 
 export const Movie = () => {
   const router = useRouter();
   const { id } = router.query;
+  const movieId = Array.isArray(id) ? id[0] : id;
+  const credits = useMovieCredits(Number.parseInt(movieId!)).data;
 
   return <MovieCard id={id as string}></MovieCard>;
 

@@ -37,3 +37,46 @@ export type Serie = {
   vote_count: number;
   vote_average: number;
 };
+
+/**
+ * Type for each Movie casts
+ */
+export type Cast = {
+  adult: boolean;
+  gender: number;
+  id: number;
+  known_for_department: string;
+  name: string;
+  original_name: string;
+  popularity: number;
+  profile_path: string;
+  cast_id: number;
+  credit_id: number;
+  order: number;
+};
+
+/**
+ * Type for each Movie crew
+ */
+export type Crew = {
+  adult: boolean;
+  gender: number;
+  id: number;
+  known_for_department: string;
+  name: string;
+  original_name: string;
+  popularity: number;
+  profile_path: string;
+  credit_id: number;
+  department: string;
+  job: string;
+};
+
+/**
+ * Type returned by API
+ */
+export type Credits = {
+  id: number;
+  cast: Cast[];
+  crew: Crew[];
+};

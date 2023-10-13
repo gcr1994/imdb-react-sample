@@ -1,4 +1,4 @@
-import { Movie, Serie } from "@/types/movie";
+import { Credits, Movie, Serie } from "@/types/movie";
 import axios from "axios";
 import { useQuery } from "react-query";
 
@@ -11,6 +11,14 @@ export const useMovieList = () => {
   const { isLoading, error, data } = useQuery(["movies"], async () => {
     const movies = await getMovies();
     return movies;
+  });
+  return { isLoading, error, data };
+};
+
+export const useMovieCredits = (id: number) => {
+  const { isLoading, error, data } = useQuery(["movies", id], async () => {
+    const credits = await getMovieCast(id);
+    return credits;
   });
   return { isLoading, error, data };
 };
@@ -58,6 +66,18 @@ export const getMovieImage: (path: string) => Promise<any> = async (path) => {
     const response = axios.get(process.env.NEXT_PUBLIC_TMBD_IMG_URL! + path);
     const data = await response;
     return data.data;
+  } catch (err) {
+    throw err;
+  }
+};
+
+export const getMovieCast: (movieId: number) => Promise<Credits> = async (
+  movieId
+) => {
+  try {
+    const response = axios.get(`movie/${movieId}/credits`);
+    const data = await response;
+    return data.data as Credits;
   } catch (err) {
     throw err;
   }
