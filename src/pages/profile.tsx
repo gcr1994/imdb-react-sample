@@ -22,6 +22,7 @@ import CardOverflow from "@mui/joy/CardOverflow";
 import { FavoritesList } from "@/components/FavoritesList";
 import { getImageToBase64 } from "@/utils/fileUtils";
 import { Playlists } from "@/components/Playlists";
+import MyTabs from "@/components/myTabs";
 
 export default function Profile() {
   const store: Store = useStore();
@@ -29,7 +30,7 @@ export default function Profile() {
   const [binFile, setBinFile] = useState<File>({} as File);
   const [tempImage, setTempImage] = useState<string>("");
 
-  const [showMovies, setShowMovies] = useState(true);
+  const labels = ["Movies", "Series"];
 
   useEffect(() => {
     if (store.user) {
@@ -216,21 +217,12 @@ export default function Profile() {
           </CardOverflow>
         </Card>
         <Card>
-          <Box>
-            <Stack direction="row">
-              <Button onClick={() => setShowMovies(true)}>Movies</Button>
-              <Button onClick={() => setShowMovies(false)}>Series</Button>
-            </Stack>
-          </Box>
           <Box sx={{ mb: 1 }}>
-            <Typography level="body-sm">
-              {showMovies ? "Favorite Movies" : "Favorite Series"}
-            </Typography>
+            <MyTabs defaultTab={0} labels={labels}>
+              <FavoritesList showMovies={true} />
+              <FavoritesList showMovies={false} />
+            </MyTabs>
           </Box>
-          <Divider />
-          <Stack spacing={2} sx={{ my: 1 }}>
-            <FavoritesList showMovies={showMovies} />
-          </Stack>
         </Card>
         <Card>
           <Box sx={{ mb: 1 }}>
