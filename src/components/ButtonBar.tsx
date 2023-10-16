@@ -32,12 +32,20 @@ export default function ButtonBar() {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          <Typography variant="h6" component="div">
             <Button
               href="/movies"
               sx={{ my: 2, color: "white", display: "block" }}
             >
               Movies
+            </Button>
+          </Typography>
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            <Button
+              href="/series"
+              sx={{ my: 2, color: "white", display: "block" }}
+            >
+              Series
             </Button>
           </Typography>
 
