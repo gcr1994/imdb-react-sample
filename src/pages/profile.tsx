@@ -34,7 +34,6 @@ export default function Profile() {
 
   useEffect(() => {
     if (store.user) {
-      console.log(store.user);
       setUser(store.user);
     }
   }, [store]);
