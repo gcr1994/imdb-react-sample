@@ -1,6 +1,8 @@
 import ButtonBar from "@/components/ButtonBar";
 import React from "react";
 import { Hydrate, QueryClient, QueryClientProvider } from "react-query";
+// These styles apply to every route in the application
+import "./globals.css";
 
 export default function MyApp({
   Component,

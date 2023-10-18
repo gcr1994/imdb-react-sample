@@ -22,7 +22,7 @@ import CardOverflow from "@mui/joy/CardOverflow";
 import { FavoritesList } from "@/components/FavoritesList";
 import { getImageToBase64 } from "@/utils/fileUtils";
 import { Playlists } from "@/components/Playlists";
-import MyTabs from "@/components/myTabs";
+import { MyTabs } from "@/components/MyTabs";
 
 export default function Profile() {
   const store: Store = useStore();

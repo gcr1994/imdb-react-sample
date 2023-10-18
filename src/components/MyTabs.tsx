@@ -7,7 +7,7 @@ interface MyTabsProps {
   labels: string[];
 }
 
-function MyTabs({ children, defaultTab = 0, labels }: MyTabsProps) {
+export const MyTabs = ({ children, defaultTab = 0, labels }: MyTabsProps) => {
   const [value, setValue] = useState<number>(defaultTab);
 
   const handleChange = (_event: React.ChangeEvent<{}>, newValue: number) => {
@@ -24,6 +24,4 @@ function MyTabs({ children, defaultTab = 0, labels }: MyTabsProps) {
       {children && React.Children.toArray(children)[value]}
     </>
   );
-}
-
-export default MyTabs;
+};
