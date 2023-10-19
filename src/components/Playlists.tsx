@@ -13,7 +13,7 @@ export const Playlists = () => {
   return playlists?.map((playlist) => (
     <>
       <Grid key={playlist._id} item xs={4}>
-        <Card sx={{ maxWidth: 345 }}>
+        <Card sx={{ maxWidth: 345 }} className="mui-card-color">
           <CardActionArea>
             <CardContent>
               <Typography gutterBottom variant="h5" component="div">

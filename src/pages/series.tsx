@@ -49,7 +49,7 @@ export const Series = () => {
     return data?.map((serie) => (
       <>
         <Grid key={serie.id} item xs={4}>
-          <Card sx={{ maxWidth: 345 }}>
+          <Card sx={{ maxWidth: 345 }} className="mui-card-color">
             <CardActionArea>
               <CardMedia
                 component="img"

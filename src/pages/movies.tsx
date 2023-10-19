@@ -129,7 +129,7 @@ export const Movies = () => {
     return data?.map((movie) => (
       <>
         <Grid key={movie.id} item xs={4}>
-          <Card sx={{ maxWidth: 345 }}>
+          <Card sx={{ maxWidth: 345 }} className="mui-card-color">
             <CardActionArea>
               <CardMedia
                 component="img"
@@ -141,96 +141,102 @@ export const Movies = () => {
                   {movie.title}{" "}
                   {user ? (
                     <>
-                      <Rating
-                        name="simple-controlled"
-                        max={1}
-                        value={
-                          user.favoriteMovies?.find((id) => id == movie.id)
-                            ? 1
-                            : 0
-                        }
-                        onChange={(_event, newValue) =>
-                          handleFavoriteClick(_event, newValue, movie)
-                        }
-                      />
-                      <BasicModal buttonText="Save">
-                        <>
-                          {!isAddPlaylist ? (
-                            <>
-                              <Grid container xs={12}>
-                                <FormControl>
-                                  <Grid xs={12}>
-                                    <FormLabel id="radio-buttons-group">
-                                      Add to playlist:
-                                    </FormLabel>
-                                  </Grid>
+                      <div className="flex-centered">
+                        <Rating
+                          name="simple-controlled"
+                          max={1}
+                          value={
+                            user.favoriteMovies?.find((id) => id == movie.id)
+                              ? 1
+                              : 0
+                          }
+                          onChange={(_event, newValue) =>
+                            handleFavoriteClick(_event, newValue, movie)
+                          }
+                        />
+                        <BasicModal buttonText="Save">
+                          <>
+                            {!isAddPlaylist ? (
+                              <>
+                                <Grid container xs={12}>
+                                  <FormControl>
+                                    <Grid xs={12}>
+                                      <FormLabel id="radio-buttons-group">
+                                        Add to playlist:
+                                      </FormLabel>
+                                    </Grid>
 
-                                  {playlists?.map((playlist) => (
-                                    <>
-                                      <Grid container xs={12}>
-                                        <Grid xs={12}>
-                                          <FormControlLabel
-                                            control={
-                                              <Checkbox
-                                                checked={handleIsChecked(
-                                                  playlist,
-                                                  movie
-                                                )}
-                                                onChange={() =>
-                                                  handleChangeRadioButton(
+                                    {playlists?.map((playlist) => (
+                                      <>
+                                        <Grid container xs={12}>
+                                          <Grid xs={12}>
+                                            <FormControlLabel
+                                              control={
+                                                <Checkbox
+                                                  checked={handleIsChecked(
                                                     playlist,
                                                     movie
-                                                  )
-                                                }
-                                                value={playlist._id}
-                                              />
-                                            }
-                                            label={playlist.name}
-                                          />
+                                                  )}
+                                                  onChange={() =>
+                                                    handleChangeRadioButton(
+                                                      playlist,
+                                                      movie
+                                                    )
+                                                  }
+                                                  value={playlist._id}
+                                                />
+                                              }
+                                              label={playlist.name}
+                                            />
+                                          </Grid>
                                         </Grid>
-                                      </Grid>
-                                    </>
-                                  ))}
-                                  <Grid container xs={12}>
-                                    <Grid xs={4}></Grid>
+                                      </>
+                                    ))}
+                                    <Grid container xs={12}>
+                                      <Grid xs={4}></Grid>
 
-                                    <Grid xs={8}>
-                                      <Button onClick={handleCreatePlaylist}>
-                                        Add Playlist
-                                      </Button>
+                                      <Grid xs={8}>
+                                        <Button onClick={handleCreatePlaylist}>
+                                          Add Playlist
+                                        </Button>
+                                      </Grid>
                                     </Grid>
-                                  </Grid>
+                                  </FormControl>
+                                </Grid>
+                              </>
+                            ) : (
+                              <>
+                                <FormControl>
+                                  <FormLabel id="create-playlist">
+                                    Playlist Name:
+                                  </FormLabel>
+                                  <Input
+                                    id="addPlaylist"
+                                    type="text"
+                                    value={playlistName}
+                                    onChange={(e) => {
+                                      setPlaylistName(e.currentTarget.value);
+                                    }}
+                                    placeholder="Name"
+                                  />
+                                  <Button
+                                    onClick={(event) =>
+                                      handleAddPlaylist(event)
+                                    }
+                                  >
+                                    Add
+                                  </Button>
+                                  <Button
+                                    onClick={() => setIsAddPlaylist(false)}
+                                  >
+                                    Back
+                                  </Button>
                                 </FormControl>
-                              </Grid>
-                            </>
-                          ) : (
-                            <>
-                              <FormControl>
-                                <FormLabel id="create-playlist">
-                                  Playlist Name:
-                                </FormLabel>
-                                <Input
-                                  id="addPlaylist"
-                                  type="text"
-                                  value={playlistName}
-                                  onChange={(e) => {
-                                    setPlaylistName(e.currentTarget.value);
-                                  }}
-                                  placeholder="Name"
-                                />
-                                <Button
-                                  onClick={(event) => handleAddPlaylist(event)}
-                                >
-                                  Add
-                                </Button>
-                                <Button onClick={() => setIsAddPlaylist(false)}>
-                                  Back
-                                </Button>
-                              </FormControl>
-                            </>
-                          )}
-                        </>
-                      </BasicModal>
+                              </>
+                            )}
+                          </>
+                        </BasicModal>
+                      </div>
                     </>
                   ) : null}
                 </Typography>

@@ -29,7 +29,7 @@ export const Movie = () => {
     if (error) return "An error has occurred: " + error;
 
     return (
-      <Card sx={{ maxWidth: 345 }}>
+      <Card sx={{ maxWidth: 345 }} className="mui-card-color">
         <CardActionArea>
           <CardMedia
             component="img"
